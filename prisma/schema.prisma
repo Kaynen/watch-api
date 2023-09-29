@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            BigInt @default(autoincrement()) @id
+  name          String
+  image         String
+  email         String
+  password      String
+  phone         String
+  cpf           String
+  theftAlert    TheftAlert[]
+  report        CollaborativeReport[]
+}
+
+model Branch {
+  id            BigInt @default(autoincrement()) @id
+  name          String
+  created_at    DateTime
+  updated_at    DateTime
+  deleted_at    DateTime?
+  vehicles      Vehicle[]
+}
+
+model VehicleType {
+  id            BigInt @default(autoincrement()) @id
+  name          String
+  created_at    DateTime
+  updated_at    DateTime
+  deleted_at    DateTime?
+  vehicles      Vehicle[]
+}
+
+model Vehicle {
+  id            BigInt @default(autoincrement()) @id
+  branch        Branch @relation(fields: [branch_id], references: [id])
+  branch_id      BigInt
+  type          VehicleType @relation(fields: [type_id], references: [id])
+  type_id       BigInt
+  model         String
+  color         String
+  board         String
+  created_at    DateTime
+  updated_at    DateTime
+  deleted_at    DateTime?
+  images        VehicleImage[]
+  theftAlert    TheftAlert[]
+  tracking      Tracking[]
+  report        CollaborativeReport[]
+}
+
+
+model VehicleImage {
+  id            BigInt @default(autoincrement()) @id
+  vehicle       Vehicle @relation(fields: [vehicle_id], references: [id])
+  vehicle_id    BigInt
+  image         String
+  created_at    DateTime
+  updated_at    DateTime
+  deleted_at    DateTime?
+}
+
+
+model TheftAlert {
+  id            BigInt @default(autoincrement()) @id
+  user          User @relation(fields: [user_id], references: [id])
+  user_id       BigInt
+  vehicle       Vehicle @relation(fields: [vehicle_id], references: [id])
+  vehicle_id    BigInt
+  address       String
+  lat           String
+  lng           String
+  created_at    DateTime
+  updated_at    DateTime
+  deleted_at    DateTime?
+}
+
+model Tracking {
+  id            BigInt @default(autoincrement()) @id
+  vehicle       Vehicle @relation(fields: [vehicle_id], references: [id])
+  vehicle_id    BigInt
+  lat           String
+  lng           String
+  address       String
+  created_at    DateTime
+  updated_at    DateTime
+  deleted_at    DateTime?
+}
+
+model CollaborativeReport {
+  id            BigInt @default(autoincrement()) @id
+  vehicle       Vehicle @relation(fields: [vehicle_id], references: [id])
+  vehicle_id    BigInt
+  user          User @relation(fields: [user_id], references: [id])
+  user_id       BigInt
+  lat           String
+  lng           String
+  address       String
+  created_at    DateTime
+  updated_at    DateTime
+  deleted_at    DateTime?
+}
