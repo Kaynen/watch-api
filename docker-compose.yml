@@ -1,0 +1,40 @@
+version: "3.8"
+networks:
+  watch-backend:
+    driver: bridge
+
+volumes:
+  watch-mysql: {}
+
+services:
+  watch-mysql:
+    container_name: watch-mysql
+    image: mysql:5.7
+    restart: always
+    networks:
+      - watch-backend
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: 'watch'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'watch'
+    volumes:
+      - watch-mysql:/var/lib/mysql
+
+  watch-app:
+    container_name: watch-app
+    env_file: ./.env
+    networks:
+      - watch-backend
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/root/workspace
+      - ~/.npmrc:/root/.npmc
+      - /root/workspace/node_modules
+    depends_on:
+      - watch-mysql
