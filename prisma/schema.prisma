@@ -6,48 +6,55 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator client {
+  provider = "prisma-client-js"
+}
+
 model User {
   id            BigInt @default(autoincrement()) @id
-  name          String
-  image         String
-  email         String
-  password      String
-  phone         String
-  cpf           String
+  name          String @db.VarChar(255)
+  image         String @db.VarChar(255)
+  email         String @db.VarChar(255)
+  password      String @db.VarChar(255)
+  phone         String @db.VarChar(255)
+  cpf           String @db.VarChar(255)
   theftAlert    TheftAlert[]
   report        CollaborativeReport[]
+  created_at    DateTime? @default(now())
+  updated_at    DateTime? @updatedAt()
+  deleted_at    DateTime? @db.Timestamp(0)
 }
 
 model Branch {
   id            BigInt @default(autoincrement()) @id
-  name          String
-  created_at    DateTime
-  updated_at    DateTime
-  deleted_at    DateTime?
+  name          String @db.VarChar(255)
+  created_at    DateTime? @default(now())
+  updated_at    DateTime? @updatedAt
+  deleted_at    DateTime? @db.Timestamp(0)
   vehicles      Vehicle[]
 }
 
 model VehicleType {
   id            BigInt @default(autoincrement()) @id
-  name          String
-  created_at    DateTime
-  updated_at    DateTime
-  deleted_at    DateTime?
+  name          String @db.VarChar(255)
+  created_at    DateTime? @default(now())
+  updated_at    DateTime? @updatedAt()
+  deleted_at    DateTime? @db.Timestamp(0)
   vehicles      Vehicle[]
 }
 
 model Vehicle {
   id            BigInt @default(autoincrement()) @id
   branch        Branch @relation(fields: [branch_id], references: [id])
-  branch_id      BigInt
+  branch_id     BigInt
   type          VehicleType @relation(fields: [type_id], references: [id])
   type_id       BigInt
-  model         String
-  color         String
-  board         String
-  created_at    DateTime
-  updated_at    DateTime
-  deleted_at    DateTime?
+  model         String @db.VarChar(255)
+  color         String @db.VarChar(255)
+  board         String @db.VarChar(255)
+  created_at    DateTime? @default(now())
+  updated_at    DateTime? @updatedAt()
+  deleted_at    DateTime? @db.Timestamp(0)
   images        VehicleImage[]
   theftAlert    TheftAlert[]
   tracking      Tracking[]
@@ -59,10 +66,10 @@ model VehicleImage {
   id            BigInt @default(autoincrement()) @id
   vehicle       Vehicle @relation(fields: [vehicle_id], references: [id])
   vehicle_id    BigInt
-  image         String
-  created_at    DateTime
-  updated_at    DateTime
-  deleted_at    DateTime?
+  image         String @db.VarChar(255)
+  created_at    DateTime? @default(now())
+  updated_at    DateTime? @updatedAt()
+  deleted_at    DateTime? @db.Timestamp(0)
 }
 
 
@@ -72,24 +79,24 @@ model TheftAlert {
   user_id       BigInt
   vehicle       Vehicle @relation(fields: [vehicle_id], references: [id])
   vehicle_id    BigInt
-  address       String
-  lat           String
-  lng           String
-  created_at    DateTime
-  updated_at    DateTime
-  deleted_at    DateTime?
+  address       String @db.VarChar(255)
+  lat           String @db.VarChar(255)
+  lng           String @db.VarChar(255)
+  created_at    DateTime? @default(now())
+  updated_at    DateTime? @updatedAt()
+  deleted_at    DateTime? @db.Timestamp(0)
 }
 
 model Tracking {
   id            BigInt @default(autoincrement()) @id
   vehicle       Vehicle @relation(fields: [vehicle_id], references: [id])
   vehicle_id    BigInt
-  lat           String
-  lng           String
-  address       String
-  created_at    DateTime
-  updated_at    DateTime
-  deleted_at    DateTime?
+  lat           String @db.VarChar(255)
+  lng           String @db.VarChar(255)
+  address       String @db.VarChar(255)
+  created_at    DateTime? @default(now())
+  updated_at    DateTime? @updatedAt()
+  deleted_at    DateTime? @db.Timestamp(0)
 }
 
 model CollaborativeReport {
@@ -98,10 +105,10 @@ model CollaborativeReport {
   vehicle_id    BigInt
   user          User @relation(fields: [user_id], references: [id])
   user_id       BigInt
-  lat           String
-  lng           String
-  address       String
-  created_at    DateTime
-  updated_at    DateTime
-  deleted_at    DateTime?
+  lat           String @db.VarChar(255)
+  lng           String @db.VarChar(255)
+  address       String @db.VarChar(255)
+  created_at    DateTime? @default(now())
+  updated_at    DateTime? @updatedAt()
+  deleted_at    DateTime? @db.Timestamp(0)
 }
