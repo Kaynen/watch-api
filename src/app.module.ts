@@ -1,15 +1,14 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
-import { VehicleModule } from './vehicle/vehicle.module';
-import { BranchModule } from './branch/branch.module';
-import { VehicleImageModule } from './vehicle-image/vehicle-image.module';
-import { TheftAlertModule } from './theft-alert/theft-alert.module';
-import { TrackingModule } from './tracking/tracking.module';
-import { CollaborativeReportModule } from './collaborative-report/collaborative-report.module';
-import { VehicleTypeModule } from './vehicle-type/vehicle-type.module';
-import { PrismaModule } from 'src/prisma/prisma.module';
+import { Module } from '@nestjs/common'
+import { AppController } from './app.controller'
+import { UsersModule } from './users/users.module'
+import { BranchModule } from './branch/branch.module'
+import { PrismaModule } from 'src/prisma/prisma.module'
+import { VehicleModule } from './vehicle/vehicle.module'
+import { TrackingModule } from './tracking/tracking.module'
+import { TheftAlertModule } from './theft-alert/theft-alert.module'
+import { VehicleTypeModule } from './vehicle-type/vehicle-type.module'
+import { VehicleImageModule } from './vehicle-image/vehicle-image.module'
+import { CollaborativeReportModule } from './collaborative-report/collaborative-report.module'
 
 @Module({
   imports: [
@@ -21,9 +20,8 @@ import { PrismaModule } from 'src/prisma/prisma.module';
     TrackingModule,
     CollaborativeReportModule,
     VehicleTypeModule,
-    PrismaModule,
+    PrismaModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: []
 })
 export class AppModule {}

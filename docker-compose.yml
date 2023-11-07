@@ -28,7 +28,7 @@ services:
     networks:
       - watch-backend
     build:
-      dockerfile: ./Dockerfile
+      dockerfile: ./.infra/app/Dockerfile
       context: .
     ports:
       - 3000:3000

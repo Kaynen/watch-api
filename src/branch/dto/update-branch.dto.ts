@@ -1,9 +1,11 @@
 import { PartialType } from '@nestjs/mapped-types'
 import { CreateBranchDto } from './create-branch.dto'
-import { IsOptional, IsString } from 'class-validator'
+import { IsDefined, IsNotEmpty, IsString, MaxLength } from 'class-validator'
 
 export class UpdateBranchDto extends PartialType(CreateBranchDto) {
   @IsString()
-  @IsOptional()
+  @IsDefined()
+  @IsNotEmpty()
+  @MaxLength(255)
   name: string
 }
