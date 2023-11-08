@@ -1,5 +1,5 @@
+import { Injectable } from '@nestjs/common'
 import { BranchService } from 'src/branch/branch.service'
-import { Injectable, NotFoundException } from '@nestjs/common'
 import { ResponseBranchDto } from 'src/branch/dto/response-branch.dto'
 import { GetBranchUseCase } from 'src/branch/use-cases/get-branch.usecase'
 
@@ -11,10 +11,7 @@ export class DeleteBranchUseCase {
   ) {}
 
   async execute(id: number | bigint): Promise<ResponseBranchDto | null> {
-    const branch = await this.getBranchUseCase.execute(id)
-    if (!branch) {
-      throw new NotFoundException('Branch not found')
-    }
+    await this.getBranchUseCase.execute(id)
     return await this.branchService.softDelete(id)
   }
 }

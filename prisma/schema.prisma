@@ -10,7 +10,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User {
+model user {
   id            BigInt @default(autoincrement()) @id
   name          String @db.VarChar(255)
   image         String @db.VarChar(255)
@@ -18,36 +18,50 @@ model User {
   password      String @db.VarChar(255)
   phone         String @db.VarChar(255)
   cpf           String @db.VarChar(255)
-  theftAlert    TheftAlert[]
-  report        CollaborativeReport[]
+  theftAlert    theft_alert[]
+  report        collaborative_report[]
   created_at    DateTime? @default(now())
   updated_at    DateTime? @updatedAt()
   deleted_at    DateTime? @db.Timestamp(0)
+  vehicles      vehicle[]
 }
 
-model Branch {
+model origin {
+  id            BigInt @default(autoincrement()) @id
+  name          String @db.VarChar(255)
+  created_at    DateTime? @default(now())
+  updated_at    DateTime? @updatedAt()
+  deleted_at    DateTime? @db.Timestamp(0)
+  vehicles      vehicle[]
+  theftAlert    theft_alert[]
+}
+model branch {
   id            BigInt @default(autoincrement()) @id
   name          String @db.VarChar(255)
   created_at    DateTime? @default(now())
   updated_at    DateTime? @updatedAt
   deleted_at    DateTime? @db.Timestamp(0)
-  vehicles      Vehicle[]
+  vehicles      vehicle[]
 }
 
-model VehicleType {
+model vehicle_type {
   id            BigInt @default(autoincrement()) @id
   name          String @db.VarChar(255)
   created_at    DateTime? @default(now())
   updated_at    DateTime? @updatedAt()
   deleted_at    DateTime? @db.Timestamp(0)
-  vehicles      Vehicle[]
+  vehicles      vehicle[]
 }
 
-model Vehicle {
+model vehicle {
   id            BigInt @default(autoincrement()) @id
-  branch        Branch @relation(fields: [branch_id], references: [id])
+  origin        origin @relation(fields: [origin_id], references: [id])
+  origin_id     BigInt
+  user          user? @relation(fields: [user_id], references: [id])
+  user_id       BigInt? @default(0)
+  branch        branch @relation(fields: [branch_id], references: [id])
   branch_id     BigInt
-  type          VehicleType @relation(fields: [type_id], references: [id])
+  type          vehicle_type @relation(fields: [type_id], references: [id])
   type_id       BigInt
   model         String @db.VarChar(255)
   color         String @db.VarChar(255)
@@ -55,16 +69,16 @@ model Vehicle {
   created_at    DateTime? @default(now())
   updated_at    DateTime? @updatedAt()
   deleted_at    DateTime? @db.Timestamp(0)
-  images        VehicleImage[]
-  theftAlert    TheftAlert[]
-  tracking      Tracking[]
-  report        CollaborativeReport[]
+  images        vehicle_image[]
+  theftAlert    theft_alert[]
+  tracking      tracking[]
+  report        collaborative_report[]
 }
 
 
-model VehicleImage {
+model vehicle_image {
   id            BigInt @default(autoincrement()) @id
-  vehicle       Vehicle @relation(fields: [vehicle_id], references: [id])
+  vehicle       vehicle @relation(fields: [vehicle_id], references: [id])
   vehicle_id    BigInt
   image         String @db.VarChar(255)
   created_at    DateTime? @default(now())
@@ -73,11 +87,13 @@ model VehicleImage {
 }
 
 
-model TheftAlert {
+model theft_alert {
   id            BigInt @default(autoincrement()) @id
-  user          User @relation(fields: [user_id], references: [id])
+  origin        origin @relation(fields: [origin_id], references: [id])
+  origin_id     BigInt
+  user          user @relation(fields: [user_id], references: [id])
   user_id       BigInt
-  vehicle       Vehicle @relation(fields: [vehicle_id], references: [id])
+  vehicle       vehicle @relation(fields: [vehicle_id], references: [id])
   vehicle_id    BigInt
   address       String @db.VarChar(255)
   lat           String @db.VarChar(255)
@@ -87,9 +103,9 @@ model TheftAlert {
   deleted_at    DateTime? @db.Timestamp(0)
 }
 
-model Tracking {
+model tracking {
   id            BigInt @default(autoincrement()) @id
-  vehicle       Vehicle @relation(fields: [vehicle_id], references: [id])
+  vehicle       vehicle @relation(fields: [vehicle_id], references: [id])
   vehicle_id    BigInt
   lat           String @db.VarChar(255)
   lng           String @db.VarChar(255)
@@ -99,15 +115,16 @@ model Tracking {
   deleted_at    DateTime? @db.Timestamp(0)
 }
 
-model CollaborativeReport {
+model collaborative_report {
   id            BigInt @default(autoincrement()) @id
-  vehicle       Vehicle @relation(fields: [vehicle_id], references: [id])
+  vehicle       vehicle @relation(fields: [vehicle_id], references: [id])
   vehicle_id    BigInt
-  user          User @relation(fields: [user_id], references: [id])
+  user          user @relation(fields: [user_id], references: [id])
   user_id       BigInt
   lat           String @db.VarChar(255)
   lng           String @db.VarChar(255)
   address       String @db.VarChar(255)
+  image         String @db.VarChar(255)
   created_at    DateTime? @default(now())
   updated_at    DateTime? @updatedAt()
   deleted_at    DateTime? @db.Timestamp(0)

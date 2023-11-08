@@ -5,6 +5,7 @@ import { BranchModule } from './branch/branch.module'
 import { PrismaModule } from 'src/prisma/prisma.module'
 import { VehicleModule } from './vehicle/vehicle.module'
 import { TrackingModule } from './tracking/tracking.module'
+import { OriginModule } from './origin/origin.module'
 import { TheftAlertModule } from './theft-alert/theft-alert.module'
 import { VehicleTypeModule } from './vehicle-type/vehicle-type.module'
 import { VehicleImageModule } from './vehicle-image/vehicle-image.module'
@@ -20,7 +21,8 @@ import { CollaborativeReportModule } from './collaborative-report/collaborative-
     TrackingModule,
     CollaborativeReportModule,
     VehicleTypeModule,
-    PrismaModule
+    PrismaModule,
+    OriginModule
   ],
   controllers: []
 })

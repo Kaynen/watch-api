@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { VehicleTypeService } from 'src/vehicle-type/vehicle-type.service'
 import { ResponseVehicleTypeDto } from 'src/vehicle-type/dto/response-vehicle-type.dto'
 import { GetVehicleTypeUseCase } from 'src/vehicle-type/use-cases/get-vehicle.type.usecase'
@@ -11,10 +11,7 @@ export class DeleteVehicleTypeUseCase {
   ) {}
 
   async execute(id: number | bigint): Promise<ResponseVehicleTypeDto | null> {
-    const vehicleType = await this.getVehicleTypeUseCase.execute(id)
-    if (!vehicleType) {
-      throw new NotFoundException('VehicleType not found')
-    }
+    await this.getVehicleTypeUseCase.execute(id)
     return await this.vehicleTypeService.softDelete(id)
   }
 }

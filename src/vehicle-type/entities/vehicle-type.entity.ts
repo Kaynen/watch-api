@@ -3,7 +3,7 @@ import { CreateVehicleTypeDto } from 'src/vehicle-type/dto/create-vehicle-type.d
 import { ResponseVehicleTypeDto } from 'src/vehicle-type/dto/response-vehicle-type.dto'
 
 export class VehicleType {
-  constructor(data: Prisma.VehicleTypeCreateInput) {
+  constructor(data: Prisma.vehicle_typeCreateInput) {
     this.id = data.id
     this.name = data.name
   }

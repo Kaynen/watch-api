@@ -13,13 +13,15 @@ import { ResponseVehicleTypeDto } from 'src/vehicle-type/dto/response-vehicle-ty
 export class VehicleTypeService {
   constructor(private prismaService: PrismaService) {}
   create(createVehicleTypeDto: CreateVehicleTypeDto) {
-    return this.prismaService.vehicleType.create({ data: createVehicleTypeDto })
+    return this.prismaService.vehicle_type.create({
+      data: createVehicleTypeDto
+    })
   }
 
   async findAll(pagination: PaginationOptionsInterface) {
-    const totalItems = await this.prismaService.vehicleType.count()
+    const totalItems = await this.prismaService.vehicle_type.count()
     const total = Math.ceil(totalItems / pagination.limit)
-    const items = await this.prismaService.vehicleType.findMany({
+    const items = await this.prismaService.vehicle_type.findMany({
       where: {
         deleted_at: null
       },
@@ -40,7 +42,7 @@ export class VehicleTypeService {
   }
 
   findOne(id: number | bigint) {
-    return this.prismaService.vehicleType.findUnique({
+    return this.prismaService.vehicle_type.findUnique({
       where: {
         id: id,
         deleted_at: null
@@ -49,14 +51,14 @@ export class VehicleTypeService {
   }
 
   update(id: number | bigint, updateVehicleTypeDto: UpdateVehicleTypeDto) {
-    return this.prismaService.vehicleType.update({
+    return this.prismaService.vehicle_type.update({
       where: { id: id },
       data: updateVehicleTypeDto
     })
   }
 
   softDelete(id: number | bigint) {
-    return this.prismaService.vehicleType.update({
+    return this.prismaService.vehicle_type.update({
       where: { id: id },
       data: {
         deleted_at: new Date()
@@ -65,7 +67,7 @@ export class VehicleTypeService {
   }
 
   remove(id: number) {
-    return this.prismaService.vehicleType.delete({
+    return this.prismaService.vehicle_type.delete({
       where: { id: id }
     })
   }

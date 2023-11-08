@@ -3,7 +3,7 @@ import { CreateBranchDto } from 'src/branch/dto/create-branch.dto'
 import { ResponseBranchDto } from 'src/branch/dto/response-branch.dto'
 
 export class Branch {
-  constructor(data: Prisma.BranchCreateInput) {
+  constructor(data: Prisma.branchCreateInput) {
     this.id = data.id
     this.name = data.name
   }
