@@ -1,26 +1,72 @@
-import { Injectable } from '@nestjs/common';
-import { CreateVehicleTypeDto } from './dto/create-vehicle-type.dto';
-import { UpdateVehicleTypeDto } from './dto/update-vehicle-type.dto';
+import { Injectable } from '@nestjs/common'
+import { PrismaService } from 'src/prisma/prisma.service'
+import { CreateVehicleTypeDto } from './dto/create-vehicle-type.dto'
+import { UpdateVehicleTypeDto } from './dto/update-vehicle-type.dto'
+import {
+  Pagination,
+  PaginationOptionsInterface
+} from 'src/core/PaginationHelper'
+import { VehicleType } from 'src/vehicle-type/entities/vehicle-type.entity'
+import { ResponseVehicleTypeDto } from 'src/vehicle-type/dto/response-vehicle-type.dto'
 
 @Injectable()
 export class VehicleTypeService {
+  constructor(private prismaService: PrismaService) {}
   create(createVehicleTypeDto: CreateVehicleTypeDto) {
-    return 'This action adds a new vehicleType';
+    return this.prismaService.vehicleType.create({ data: createVehicleTypeDto })
   }
 
-  findAll() {
-    return `This action returns all vehicleType`;
+  async findAll(pagination: PaginationOptionsInterface) {
+    const totalItems = await this.prismaService.vehicleType.count()
+    const total = Math.ceil(totalItems / pagination.limit)
+    const items = await this.prismaService.vehicleType.findMany({
+      where: {
+        deleted_at: null
+      },
+      skip: pagination.offset,
+      take: pagination.limit
+    })
+
+    const dto = items.map((item) => {
+      const response = new VehicleType(item)
+      return response.toDto()
+    })
+
+    return new Pagination<ResponseVehicleTypeDto>({
+      results: dto,
+      total,
+      options: pagination
+    })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} vehicleType`;
+  findOne(id: number | bigint) {
+    return this.prismaService.vehicleType.findUnique({
+      where: {
+        id: id,
+        deleted_at: null
+      }
+    })
   }
 
-  update(id: number, updateVehicleTypeDto: UpdateVehicleTypeDto) {
-    return `This action updates a #${id} vehicleType`;
+  update(id: number | bigint, updateVehicleTypeDto: UpdateVehicleTypeDto) {
+    return this.prismaService.vehicleType.update({
+      where: { id: id },
+      data: updateVehicleTypeDto
+    })
+  }
+
+  softDelete(id: number | bigint) {
+    return this.prismaService.vehicleType.update({
+      where: { id: id },
+      data: {
+        deleted_at: new Date()
+      }
+    })
   }
 
   remove(id: number) {
-    return `This action removes a #${id} vehicleType`;
+    return this.prismaService.vehicleType.delete({
+      where: { id: id }
+    })
   }
 }
