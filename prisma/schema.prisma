@@ -11,19 +11,19 @@ generator client {
 }
 
 model user {
-  id            BigInt @default(autoincrement()) @id
-  name          String @db.VarChar(255)
-  image         String @db.VarChar(255)
-  email         String @db.VarChar(255)
-  password      String @db.VarChar(255)
-  phone         String @db.VarChar(255)
-  cpf           String @db.VarChar(255)
-  theftAlert    theft_alert[]
-  report        collaborative_report[]
-  created_at    DateTime? @default(now())
-  updated_at    DateTime? @updatedAt()
-  deleted_at    DateTime? @db.Timestamp(0)
-  vehicles      vehicle[]
+  id              BigInt @default(autoincrement()) @id
+  name            String @db.VarChar(255)
+  image           String? @db.VarChar(255) @default("")
+  email           String @db.VarChar(255)
+  password        String @db.VarChar(255)
+  phone           String @db.VarChar(255)
+  document_number String @db.VarChar(255)
+  theftAlert      theft_alert[]
+  report          collaborative_report[]
+  created_at      DateTime? @default(now())
+  updated_at      DateTime? @updatedAt()
+  deleted_at      DateTime? @db.Timestamp(0)
+  vehicles        vehicle[]
 }
 
 model origin {
